@@ -29,6 +29,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.relex.circleindicator.CircleIndicator;
+
 /**
  * Demonstrates a "screen-slide" animation using a {@link ViewPager}. Because {@link ViewPager}
  * automatically plays such an animation when calling {@link ViewPager#setCurrentItem(int)}, there
@@ -63,9 +65,15 @@ public class ScreenSlideActivity extends FragmentActivity {
         setContentView(R.layout.activity_screen_slide);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+        //using dot library: https://github.com/ongakuer/CircleIndicator
+        CircleIndicator indicator = findViewById(R.id.indicator);
+        indicator.setViewPager(mPager);
+        mPagerAdapter.registerDataSetObserver(indicator.getDataSetObserver());
+
+
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -101,7 +109,7 @@ public class ScreenSlideActivity extends FragmentActivity {
             case android.R.id.home:
                 // Navigate "up" the demo structure to the launchpad activity.
                 // See http://developer.android.com/design/patterns/navigation.html for more.
-                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+                NavUtils.navigateUpTo(this, new Intent(this, ScreenSlideActivity.class));
                 return true;
 
             case R.id.action_previous:
